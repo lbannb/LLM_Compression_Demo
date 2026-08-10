@@ -17,9 +17,6 @@ dependencies = [
     "transformers>=5.14.1",
 ]
 
-[project.scripts]
-llm-compression-demo = "llm_compression_demo:main"
-
 [build-system]
 requires = ["uv_build>=0.8.15,<0.9.0"]
 build-backend = "uv_build"
