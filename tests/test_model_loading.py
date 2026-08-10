@@ -1,14 +1,14 @@
-from llm_compression_demo import model
+from llm_compression_demo import model_loading as m
 
 d = 4096 # hidden dimension of Llama2-7b
 n_decoder_blocks = 32 # number of decoder blocks in Llama2-7b
 mlp_hidden_dim = 11008 # hidden dimension of the MLP in Llama2-7b
 
 def test_model_loading():
-    model.print_model_info()
+    m.print_model_info()
 
-    attn_layer_0 = model.get_decoder_layer(0, layer_type="self_attn")
-    mlp_layer_0 = model.get_decoder_layer(0, layer_type="mlp")
+    attn_layer_0 = m.get_decoder_layer(0, layer_type="self_attn")
+    mlp_layer_0 = m.get_decoder_layer(0, layer_type="mlp")
 
     # check dimensions of the projection matrices
     assert attn_layer_0["q_proj"].shape == (d, d), "Query projection matrix shape mismatch"
@@ -19,5 +19,5 @@ def test_model_loading():
     assert mlp_layer_0["up_proj"].shape == (mlp_hidden_dim, d), "Up projection matrix shape mismatch"
     assert mlp_layer_0["down_proj"].shape == (d, mlp_hidden_dim), "Down projection matrix shape mismatch"
 
-    n_layers = model.get_number_of_layers()
+    n_layers = m.get_number_of_layers()
     assert n_layers == n_decoder_blocks, f"Expected {n_decoder_blocks} decoder blocks, but found {n_layers}" 
