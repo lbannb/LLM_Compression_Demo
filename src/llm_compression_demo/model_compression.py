@@ -10,7 +10,7 @@ import llm_compression_demo.compression as c
 
 if __name__ == "__main__":
 
-    CHI = 100
+    CHI = 20
     DIMS_SA = [8,8,8,8]
     DIMS_MLP = [8,8,4,43]
 
