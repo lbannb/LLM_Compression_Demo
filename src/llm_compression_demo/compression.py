@@ -81,11 +81,11 @@ def compress_tensor(t: torch.Tensor, chi: int, dims_ket: list, dims_bra: list) -
     mpo_train.append(t.reshape(left, dims_ket[-1], dims_bra[-1], 1))
     return mpo_train
 
-def mpo_train_to_safetensor_dict(mpo_train: list[torch.Tensor]) -> dict[str, torch.Tensor]:
+def mpo_train_to_safetensor_dict(mpo_train: list[torch.Tensor], dtype: torch.dtype = torch.float16) -> dict[str, torch.Tensor]:
     """
         Converts a MPO representation of a tensor into a dictionary of tensors that can be saved as a safetensor file.
     """
-    return {f"mpo_{k}": t for k, t in enumerate(mpo_train)}
+    return {f"mpo_{k}": t.to(dtype=dtype) for k, t in enumerate(mpo_train)}
 
 if __name__ == "__main__":
     # At full chi the MPO is exact. This is the check that catches a wrong ket/bra interleave:

@@ -4,7 +4,7 @@ from huggingface_hub import hf_hub_download
 from safetensors import safe_open
 
 # docs on huggingface: https://huggingface.co/docs/transformers/en/model_doc/llama2
-REPO  = "meta-llama/Llama-2-7b-hf"  # what CompactifAI benchmarks
+REPO  = "meta-llama/Llama-2-7b-hf"  # what CompactifAI benchmarks (this is float16)
 DEVICE = "cuda"  # or "cpu"
 INDEX = json.load(open(hf_hub_download(REPO, "model.safetensors.index.json")))["weight_map"] # stores the mapping of weight names to their corresponding safetensors files
 TOTAL_SIZE  = json.load(open(hf_hub_download(REPO, "model.safetensors.index.json")))["metadata"]["total_size"]

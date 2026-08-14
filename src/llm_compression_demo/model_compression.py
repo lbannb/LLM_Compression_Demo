@@ -1,6 +1,4 @@
-import torch
-
-from  pathlib import Path
+from pathlib import Path
 from huggingface_hub import hf_hub_download
 from safetensors import safe_open
 from safetensors.torch import save_file
@@ -9,8 +7,7 @@ import llm_compression_demo.model_loading as m
 import llm_compression_demo.compression as c
 
 if __name__ == "__main__":
-
-    CHI = 20
+    CHI = 100
     DIMS_SA = [8,8,8,8]
     DIMS_MLP = [8,8,4,43]
 
@@ -51,5 +48,3 @@ if __name__ == "__main__":
                 print(f"{proj_mat_name} is already compressed. Skipped compression.")
 
                 mlp_mpo = safe_open(dir / f"layer_{layer_indx}_{proj_mat_name}.pt", framework="pt", device="cpu")
-
-        print()
