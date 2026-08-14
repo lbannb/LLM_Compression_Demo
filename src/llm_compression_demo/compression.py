@@ -72,7 +72,7 @@ def compress_tensor(t: torch.Tensor, chi: int, dims_ket: list, dims_bra: list) -
     for k in range(N - 1): # sweep from left to right
         u, s, v = torch.linalg.svd(t.reshape(left * dims_ket[k] * dims_bra[k], -1), full_matrices=False)
         r = min(chi, s.shape[0]) # truncate to chi or the exact rank, whichever is smaller
-        mpo_train.append(u[:, :r].reshape(left, dims_ket[k], dims_bra[k], r)) # add matrix u to the mpo_train
+        mpo_train.append(u[:, :r].contiguous().reshape(left, dims_ket[k], dims_bra[k], r)) # add matrix u to the mpo_train
 
         t = s[:r, None] * v[:r] # next tensor in the chain
         left = r
@@ -81,7 +81,11 @@ def compress_tensor(t: torch.Tensor, chi: int, dims_ket: list, dims_bra: list) -
     mpo_train.append(t.reshape(left, dims_ket[-1], dims_bra[-1], 1))
     return mpo_train
 
-
+def mpo_train_to_safetensor_dict(mpo_train: list[torch.Tensor]) -> dict[str, torch.Tensor]:
+    """
+        Converts a MPO representation of a tensor into a dictionary of tensors that can be saved as a safetensor file.
+    """
+    return {f"mpo_{k}": t for k, t in enumerate(mpo_train)}
 
 if __name__ == "__main__":
     # At full chi the MPO is exact. This is the check that catches a wrong ket/bra interleave:
