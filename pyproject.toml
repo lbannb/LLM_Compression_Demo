@@ -13,7 +13,6 @@ dependencies = [
     "datasets>=5.0.1",
     "numpy>=2.0,<2.5",
     "pytest>=9.1.1",
-    "quimb>=1.14.0",
     "scipy>=1.18.0",
     "torch>=2.13.0",
     "transformers>=5.14.1",
