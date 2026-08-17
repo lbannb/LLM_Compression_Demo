@@ -20,9 +20,8 @@ CHAT_CORPORA = (
     ("teknium/OpenHermes-2.5", None, "train", lambda r: "\n".join(t["value"] for t in r["conversations"])),
 )
 
-# wikitext-2 is the evaluation corpus, held out from healing. It is what Llama-2-7b's ~5.5
-# perplexity is quoted against, so it is the number worth comparing to.
-EVAL_CORPUS = ("Salesforce/wikitext", "wikitext-2-raw-v1")  # bare "wikitext" is rejected as un-namespaced
+# wikitext-2 is the evaluation data set
+EVAL_CORPUS = ("Salesforce/wikitext", "wikitext-2-raw-v1")
 SEQ_LEN = 512
 
 
@@ -53,13 +52,16 @@ def chat_blocks(tok, per_corpus: int = 4000, seq_len: int = SEQ_LEN) -> torch.Te
 
 @torch.no_grad()
 def perplexity(model, blocks: torch.Tensor, device: str = "cuda") -> float:
-    """ Returns the perplexity of the model on the given blocks of token ids. """
+    """ 
+        Returns the perplexity of the model on the given blocks of token ids. 
+        ( see: https://en.wikipedia.org/wiki/Perplexity)
+    """
     model.eval()
     total = 0.0
     for i in range(len(blocks)):
         ids = blocks[i : i + 1].to(device)
         with torch.autocast("cuda", dtype=torch.float16):
-            total += model(input_ids=ids, labels=ids).loss.item()
+            total += model(input_ids=ids, labels=ids).loss.item() # loss is the cross-entropy
     return math.exp(total / len(blocks))
 
 

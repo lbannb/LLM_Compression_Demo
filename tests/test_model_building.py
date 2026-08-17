@@ -22,9 +22,5 @@ def test_mpo_linear():
     print(f"shape {tuple(ours.shape)}  relative error vs dense weight: {err:.4f}")
     assert err < 1.0, "output no better than predicting zero -- check the ket/bra leg ordering"
 
-# def test_sentence_completion():
-
 if __name__ == "__main__":
     test_mpo_linear()
-    # test_sentence_completion()
-    
